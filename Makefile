@@ -1,3 +1,7 @@
+# see this SO for techniques in using a separate file to define variables
+# https://unix.stackexchange.com/questions/235223/makefile-include-env-file
+
+
 
 FOCUSED_COMPONENT_NAME=Blast/Project/SymlinkChecker
 FOCUSED_TEST_FILTER=
