@@ -65,6 +65,8 @@ TERMINAL_COLOR_RESET=\033[0m
 
 define output_terminal_message
 	$(eval compteur=$(shell echo $$(($(compteur)+1))))
+	$(eval columns=$(shell tput cols))
+	@printf %"$(columns)"s | tr " " "="
 	@echo "\n$(TERMINAL_COLOR_YELLOW)===== Stage $(compteur): $(1) =====$(TERMINAL_COLOR_RESET)\n"
 endef
 
