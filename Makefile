@@ -95,13 +95,14 @@ main:
 	$(call output_terminal_message,"Make all the example programs")
 	@make examples
 	$(call output_terminal_message,"🀫 🀫 🀫 🀫 🀫 🀫 🀫 FINISHED! 🀫 🀫 🀫 🀫 🀫 🀫 🀫")
+	@make celebrate_everything_built
 
 
 
 focus:
 	$(call output_terminal_message,"Announce built type")
 	@echo "Focusing build on \033[48;5;27m$(FOCUSED_COMPONENT_NAME)$(TERMINAL_COLOR_RESET)"
-	@echo "testing filter in $(FOCUSED_TEST_FILTER)"
+	@echo "testing filter in \033[48;5;27m$(FOCUSED_TEST_FILTER)$(TERMINAL_COLOR_RESET)"
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@make quintessences
 	$(call output_terminal_message,"Make all the component object files")
@@ -121,7 +122,7 @@ focus:
 
 quintessences: $(QUINTESSENCE_SOURCES)
 	[ -f $(QUINTESSENCE_BUILDER_EXECUTABLE) ] || echo "The needed executable $(QUINTESSENCE_BUILDER_EXECUTABLE) was not found"
-	find quintessence -name '*.q.yml' | xargs $(QUINTESSENCE_BUILDER_EXECUTABLE)
+	@find quintessence -name '*.q.yml' | xargs $(QUINTESSENCE_BUILDER_EXECUTABLE) --less_verbose -f
 
 
 
