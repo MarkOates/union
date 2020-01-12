@@ -89,9 +89,7 @@ main:
 	$(call output_terminal_message,"Make all the test executables")
 	@make tests
 	$(call output_terminal_message,"Run the tests for all the components")
-	@make run_tests
-	$(call output_terminal_message,"Celebrate passing all tests")
-	@make celebrate_passing_tests
+	@(make run_tests && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Build the library")
 	@make library
 	$(call output_terminal_message,"Make all the programs")
