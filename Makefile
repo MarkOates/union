@@ -67,7 +67,9 @@ TERMINAL_COLOR_RESET=\033[0m
 define output_terminal_message
 	$(eval compteur=$(shell echo $$(($(compteur)+1))))
 	$(eval columns=$(shell tput cols))
+	@echo
 	@${OUTPUT_BANNER_EXECUTABLE} -c yellow -l $(columns) -m Stage ${compteur}: ${1}
+	@echo
 endef
 
 
