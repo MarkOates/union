@@ -25,6 +25,7 @@ YAML_CPP_INCLUDE_DIR=$(YAML_CPP_DIR)/include
 
 
 QUINTESSENCE_BUILDER_EXECUTABLE=~/Repos/blast/bin/programs/quintessence_from_yaml
+OUTPUT_BANNER_EXECUTABLE=~/Repos/ncurses-art/bin/programs/celebrate
 
 
 ALLEGRO_LIBS=allegro_color allegro_font allegro_ttf allegro_dialog allegro_audio allegro_acodec allegro_primitives allegro_image allegro
@@ -66,8 +67,7 @@ TERMINAL_COLOR_RESET=\033[0m
 define output_terminal_message
 	$(eval compteur=$(shell echo $$(($(compteur)+1))))
 	$(eval columns=$(shell tput cols))
-	@printf %"$(columns)"s | tr " " "="
-	@echo "\n$(TERMINAL_COLOR_YELLOW)===== Stage $(compteur): $(1) =====$(TERMINAL_COLOR_RESET)\n"
+	@${OUTPUT_BANNER_EXECUTABLE} -c yellow -l $(columns) -m Stage ${compteur}: ${1}
 endef
 
 
