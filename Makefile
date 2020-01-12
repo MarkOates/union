@@ -101,7 +101,7 @@ main:
 
 
 focus:
-	$(call output_terminal_message,"Announce built type")
+	$(call output_terminal_message,"Announce build type")
 	@echo "Focusing build on \033[48;5;27m$(FOCUSED_COMPONENT_NAME)$(TERMINAL_COLOR_RESET)"
 	@echo "testing filter in \033[48;5;27m$(FOCUSED_TEST_FILTER)$(TERMINAL_COLOR_RESET)"
 	$(call output_terminal_message,"Compose componets from all quintessence files")
