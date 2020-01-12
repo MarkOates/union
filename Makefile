@@ -162,7 +162,7 @@ run_tests: tests
 
 celebrate_passing_tests:
 	$(eval columns=$(shell tput cols))
-	$(eval banner_width=99)
+	$(eval banner_width=103)
 	$(eval hcolumns=$(shell expr $(columns) / 2 - $(banner_width) / 2))
 	@printf ' %.0s' {1..$(hcolumns)}
 	@echo "\033[1m\033[32m🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫\033[0m"
@@ -179,7 +179,7 @@ celebrate_passing_tests:
 
 signal_failing_tests:
 	$(eval columns=$(shell tput cols))
-	$(eval banner_width=99)
+	$(eval banner_width=103)
 	$(eval hcolumns=$(shell expr $(columns) / 2 - $(banner_width) / 2))
 	@printf ' %.0s' {1..$(hcolumns)}
 	@echo "\033[1m\033[31m🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫\033[0m"
@@ -196,7 +196,7 @@ signal_failing_tests:
 
 celebrate_built_component:
 	$(eval columns=$(shell tput cols))
-	$(eval banner_width=101)
+	$(eval banner_width=105)
 	$(eval hcolumns=$(shell expr $(columns) / 2 - $(banner_width) / 2))
 	@printf ' %.0s' {1..$(hcolumns)}
 	@echo "\033[1m$(TERMINAL_COLOR_BLUE)🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫\033[0m"
@@ -213,7 +213,7 @@ celebrate_built_component:
 
 celebrate_everything_built:
 	$(eval columns=$(shell tput cols))
-	$(eval banner_width=101)
+	$(eval banner_width=105)
 	$(eval hcolumns=$(shell expr $(columns) / 2 - $(banner_width) / 2))
 	@printf ' %.0s' {1..$(hcolumns)}
 	@echo "\033[1m\033[32m$(TERMINAL_COLOR_GREEN)████$(TERMINAL_COLOR_YELLOW)🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 $(TERMINAL_COLOR_GREEN)████$(TERMINAL_COLOR_RESET)\033[0m"
