@@ -301,7 +301,7 @@ bin/tests/%: obj/tests/%.o obj/tests/TestRunner.o
 
 
 
-bin/run_all_tests: tests/TestRunner.cpp $(TEST_OBJECTS)
+bin/run_all_tests: $(TEST_OBJECTS) obj/tests/TestRunner.o
 	echo $(TEST_OBJECTS)
 	@mkdir -p $(@D)
 	@printf "compiling test_runer \e[1m\e[36m$<\033[0m..."
