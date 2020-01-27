@@ -100,7 +100,7 @@ main:
 	@make quintessences
 	$(call output_terminal_message,"Make all the component object files")
 	@make objects
-	$(call output_terminal_message,"Make all the test objects")
+	$(call output_terminal_message,"Make all the test object files")
 	@make test_objects
 	$(call output_terminal_message,"Make all the individual test executables")
 	@make tests
