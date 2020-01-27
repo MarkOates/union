@@ -102,10 +102,12 @@ main:
 	@make objects
 	$(call output_terminal_message,"Make all the test objects")
 	@make test_objects
-	$(call output_terminal_message,"Make all the test executables")
+	$(call output_terminal_message,"Make all the individual test executables")
 	@make tests
+	$(call output_terminal_message,"Make single test executable containing all tests")
+	@make all_tests
 	$(call output_terminal_message,"Run the tests for all the components")
-	@(make run_tests && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
+	@(bin/run_all_tests && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Build the library")
 	@make library
 	$(call output_terminal_message,"Make all the programs")
@@ -165,12 +167,11 @@ test_objects: $(TEST_OBJECTS)
 
 
 
-tests: $(INDIVIDUAL_TEST_EXECUTABLES) bin/run_all_tests
+tests: $(INDIVIDUAL_TEST_EXECUTABLES)
 
 
 
-run_tests: tests
-	bin/run_all_tests
+all_tests: bin/run_all_tests
 
 
 
