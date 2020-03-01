@@ -2,8 +2,9 @@
 # https://unix.stackexchange.com/questions/235223/makefile-include-env-file
 
 
-
-FOCUSED_COMPONENT_NAME=${COMPONENT}
+PROJECT_BASE_DIRECTORY := $$PWD
+FOCUSED_COMPONENT_FILENAME=/Users/markoates/Repos/hexagon/bin/programs/data/tmp/focused_component.txt
+FOCUSED_COMPONENT_NAME=`cat ${FOCUSED_COMPONENT_FILENAME}`
 FOCUSED_TEST_FILTER=${FILTER}
 
 
@@ -121,9 +122,10 @@ main:
 
 
 focus:
-	$(call output_terminal_message,"Announce build type")
-	@echo "Focusing build on \033[48;5;27m$(FOCUSED_COMPONENT_NAME)$(TERMINAL_COLOR_RESET)"
-	@echo "testing filter in \033[48;5;27m$(FOCUSED_TEST_FILTER)$(TERMINAL_COLOR_RESET)"
+	$(call output_terminal_message,"Announce focus build info")
+	@echo "                    Project: $(PROJECT_BASE_DIRECTORY)"
+	@echo "Focusing build on component: \033[48;5;27m$(FOCUSED_COMPONENT_NAME)$(TERMINAL_COLOR_RESET)"
+	@echo "          testing filter in: \033[48;5;27m$(FOCUSED_TEST_FILTER)$(TERMINAL_COLOR_RESET)"
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@make quintessences
 	$(call output_terminal_message,"Make all the component object files")
