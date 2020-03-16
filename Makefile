@@ -113,7 +113,7 @@ main:
 	$(call output_terminal_message,"Build the library")
 	@make library
 	$(call output_terminal_message,"Make all the programs")
-	@make programs
+	@make programs -j8
 	$(call output_terminal_message,"Make all the example programs")
 	@make examples
 	$(call output_terminal_message,"Celebrate successful build")
