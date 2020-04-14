@@ -130,9 +130,11 @@ focus:
 	@make quintessences
 	$(call output_terminal_message,"Make all the component object files")
 	@make objects
+	$(call output_terminal_message, "Delete the existing focused component test object and test binary")
+	@rm obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
+	@rm bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Make the focused component test")
 	@make obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
-	$(call output_terminal_message,"Make the focused component test")
 	@make bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Run the focused component test")
 	@(./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_NAME)* && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
