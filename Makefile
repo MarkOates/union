@@ -18,9 +18,15 @@ endif
 PROJECT_NAME=mylibrary
 VERSION_NUMBER=0.0.1
 LIBS_ROOT=/Users/markoates/Repos
+## This is a temporary hack to have union/Makefile build with allegro_flare
+ifeq ($(OS),Windows_NT)
+	ASIO_LIBS_ROOT=/home/Mark/Repos
+else
+	ASIO_LIBS_ROOT=$(LIBS_ROOT)
+endif
 ALLEGRO_INCLUDE_DIR=$(LIBS_ROOT)/allegro5/build/include
 ALLEGRO_LIB_DIR=$(LIBS_ROOT)/allegro5/build/lib
-ASIO_INCLUDE_DIR=$(LIBS_ROOT)/asio/asio/include
+ASIO_INCLUDE_DIR=$(ASIO_LIBS_ROOT)/asio/asio/include
 GOOGLE_TEST_DIR=$(LIBS_ROOT)/googletest
 GOOGLE_TEST_LIB_DIR=$(GOOGLE_TEST_DIR)/build/googlemock/gtest
 GOOGLE_TEST_INCLUDE_DIR=$(GOOGLE_TEST_DIR)/googletest/include
