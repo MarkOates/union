@@ -120,23 +120,23 @@ endef
 
 main:
 	$(call output_terminal_message,"Compose componets from all quintessence files")
-	@make quintessences
+	@make quintessences -j8
 	$(call output_terminal_message,"Make all the component object files")
-	@make objects
+	@make objects -j8
 	$(call output_terminal_message,"Make all the test object files")
-	@make test_objects
+	@make test_objects -j8
 	$(call output_terminal_message,"Make all the individual test executables")
-	@make tests
+	@make tests -j8
 	$(call output_terminal_message,"Make single test executable containing all tests")
-	@make all_tests
+	@make all_tests -j8
 	$(call output_terminal_message,"Run the tests for all the components")
 	@(bin/run_all_tests && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Build the library")
-	@make library
+	@make library -j8
 	$(call output_terminal_message,"Make all the programs")
 	@make programs -j8
 	$(call output_terminal_message,"Make all the example programs")
-	@make examples
+	@make examples -j8
 	$(call output_terminal_message,"Celebrate successful build")
 	@make celebrate_everything_built
 
@@ -148,9 +148,9 @@ focus:
 	@echo "Focusing build on component: \033[48;5;27m$(FOCUSED_COMPONENT_NAME)$(TERMINAL_COLOR_RESET)"
 	@echo "          testing filter in: \033[48;5;27m$(FOCUSED_TEST_FILTER)$(TERMINAL_COLOR_RESET)"
 	$(call output_terminal_message,"Compose componets from all quintessence files")
-	@make quintessences
+	@make quintessences -j8
 	$(call output_terminal_message,"Make all the component object files")
-	@make objects
+	@make objects -j8
 	$(call output_terminal_message, "Delete the existing focused component test object and test binary")
 	@-rm obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
 	@-rm bin/tests/$(FOCUSED_COMPONENT_NAME)Test
@@ -160,7 +160,7 @@ focus:
 	$(call output_terminal_message,"Run the focused component test")
 	@(./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_NAME)* && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Make all the programs")
-	@make programs
+	@make programs -j8
 	$(call output_terminal_message,"Celebrate integrated component tests")
 	@make celebrate_built_component
 
