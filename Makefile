@@ -150,7 +150,7 @@ focus:
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@make quintessences -j8
 	$(call output_terminal_message,"Make all the component object files")
-	@make objects -j8
+	@make objects
 	$(call output_terminal_message, "Delete the existing focused component test object and test binary")
 	@-rm obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
 	@-rm bin/tests/$(FOCUSED_COMPONENT_NAME)Test
