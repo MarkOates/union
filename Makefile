@@ -24,8 +24,10 @@ ifeq ($(OS),Windows_NT)
 else
 	ASIO_LIBS_ROOT=$(LIBS_ROOT)
 endif
-ALLEGRO_INCLUDE_DIR=$(LIBS_ROOT)/allegro5/build/include
-ALLEGRO_LIB_DIR=$(LIBS_ROOT)/allegro5/build/lib
+#ALLEGRO_INCLUDE_DIR=$(LIBS_ROOT)/allegro5/build/include
+#ALLEGRO_LIB_DIR=$(LIBS_ROOT)/allegro5/build/lib
+ALLEGRO_INCLUDE_DIR=.
+ALLEGRO_LIB_DIR=.
 ASIO_INCLUDE_DIR=$(ASIO_LIBS_ROOT)/asio/asio/include
 GOOGLE_TEST_DIR=$(LIBS_ROOT)/googletest
 GOOGLE_TEST_LIB_DIR=$(GOOGLE_TEST_DIR)/build/googlemock/gtest
