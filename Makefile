@@ -309,7 +309,7 @@ endif
 obj/tests/%.o: tests/%.cpp
 	@mkdir -p $(@D)
 	@printf "compiling test object file \e[1m\e[36m$<\033[0m..."
-	@g++ -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR)
+	@g++ -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR)
 	@echo "done. Object at \033[1m\033[32m$@\033[0m"
 
 
