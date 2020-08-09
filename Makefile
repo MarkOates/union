@@ -160,7 +160,7 @@ focus:
 	@make obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
 	@make bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Run the focused component test")
-	@(./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_NAME)* && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
+	@(./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_FILTER)* && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Make all the programs")
 	@make programs -j8
 	$(call output_terminal_message,"Celebrate integrated component tests")
