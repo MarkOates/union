@@ -2,7 +2,9 @@
 # https://unix.stackexchange.com/questions/235223/makefile-include-env-file
 
 
-PROJECT_BASE_DIRECTORY := $$PWD
+FOCUSED_PROJECT_FOLDER_FILENAME=/Users/markoates/Repos/hexagon/bin/programs/data/tmp/current_project_directory.txt
+# PROJECT_BASE_DIRECTORY := $$PWD
+PROJECT_BASE_DIRECTORY=`cat ${FOCUSED_PROJECT_FOLDER_FILENAME}`
 FOCUSED_COMPONENT_FILENAME=/Users/markoates/Repos/hexagon/bin/programs/data/tmp/focused_component.txt
 FOCUSED_COMPONENT_NAME=`cat ${FOCUSED_COMPONENT_FILENAME}`
 FOCUSED_TEST_FILTER=${FILTER}
