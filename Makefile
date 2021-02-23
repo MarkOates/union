@@ -118,7 +118,7 @@ endef
 
 
 
-.PHONY: main quintessence programs objects examples library tests run_tests
+.PHONY: main quintessence programs objects examples library tests docs run_tests
 
 
 
@@ -141,6 +141,8 @@ main:
 	@make programs -j8
 	$(call output_terminal_message,"Make all the example programs")
 	@make examples -j8
+	$(call output_terminal_message,"Update the documentation")
+	@make docs
 	$(call output_terminal_message,"Celebrate successful build")
 	@make celebrate_everything_built
 
@@ -165,6 +167,8 @@ focus:
 	@(./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_FILTER)* && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Make all the programs")
 	@make programs -j8
+	$(call output_terminal_message,"Update the documentation")
+	@make docs
 	$(call output_terminal_message,"Celebrate integrated component tests")
 	@make celebrate_built_component
 
@@ -202,6 +206,12 @@ tests: $(INDIVIDUAL_TEST_EXECUTABLES)
 
 
 all_tests: bin/run_all_tests
+
+
+
+docs:
+	@mkdir -p ./docs
+	ruby /Users/markoates/Repos/blast/scripts/tree_builder.rb
 
 
 
