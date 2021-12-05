@@ -210,7 +210,7 @@ all_tests: bin/run_all_tests
 
 docs:
 	@mkdir -p ./docs
-	ruby /Users/markoates/Repos/blast/scripts/tree_builder.rb
+	ruby /Users/markoates/Repos/blast/scripts/build_documentation.rb
 
 
 
