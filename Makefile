@@ -6,6 +6,7 @@ FOCUSED_PROJECT_FOLDER_FILENAME=/Users/markoates/Repos/hexagon/bin/programs/data
 # PROJECT_BASE_DIRECTORY := $$PWD
 PROJECT_BASE_DIRECTORY=`cat ${FOCUSED_PROJECT_FOLDER_FILENAME}`
 FOCUSED_COMPONENT_FILENAME=/Users/markoates/Repos/hexagon/bin/programs/data/tmp/focused_component.txt
+BUILD_STATUS_SIGNALING_FILENAME=/Users/markoates/Repos/hexagon/bin/programs/data/tmp/build_signal.txt
 FOCUSED_COMPONENT_NAME=`cat ${FOCUSED_COMPONENT_FILENAME}`
 FOCUSED_TEST_FILTER=${FILTER}
 
@@ -152,6 +153,8 @@ focus:
 	@echo "                    Project: $(PROJECT_BASE_DIRECTORY)"
 	@echo "Focusing build on component: \033[48;5;27m$(FOCUSED_COMPONENT_NAME)$(TERMINAL_COLOR_RESET)"
 	@echo "          testing filter in: \033[48;5;27m$(FOCUSED_TEST_FILTER)$(TERMINAL_COLOR_RESET)"
+	$(call output_terminal_message,"Signal to Hexagon build has started")
+	@echo "started" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@make quintessences -j8
 	$(call output_terminal_message,"Make all the component object files")
@@ -170,6 +173,8 @@ focus:
 	@make docs
 	$(call output_terminal_message,"Celebrate integrated component tests")
 	@make celebrate_built_component
+	$(call output_terminal_message,"Signal to Hexagon that build has completed")
+	@echo "completed" >> $(BUILD_STATUS_SIGNALING_FILENAME)
 
 
 
