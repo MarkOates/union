@@ -156,25 +156,33 @@ focus:
 	$(call output_terminal_message,"Signal to Hexagon build has started")
 	@echo "started" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	$(call output_terminal_message,"Compose componets from all quintessence files")
+	@echo "generating_sources_files_from_quintessence" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make quintessences -j8
 	$(call output_terminal_message,"Make all the component object files")
+	@echo "building_component_object_files" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make objects
 	$(call output_terminal_message, "Delete the existing focused component test object and test binary")
+	@echo "delete_focused_component_test_object_file_and_test_executable" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@-rm obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
 	@-rm bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Make the focused component test")
+	@echo "build_focused_component_test_object_file_and_test_executable" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
 	@make bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Run the focused component test")
+	@echo "run_test_for_focused_component" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@(./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_FILTER)* && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Make all the programs")
+	@echo "make_all_programs" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make programs -j8
 	$(call output_terminal_message,"Update the documentation")
+	@echo "make_documentation" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make docs
 	$(call output_terminal_message,"Celebrate integrated component tests")
+	@echo "signal_component_built_and_integrated" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make celebrate_built_component
 	$(call output_terminal_message,"Signal to Hexagon that build has completed")
-	@echo "completed" >> $(BUILD_STATUS_SIGNALING_FILENAME)
+	@echo "completed" > $(BUILD_STATUS_SIGNALING_FILENAME)
 
 
 
