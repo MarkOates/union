@@ -116,6 +116,12 @@ TERMINAL_COLOR_LIGHT_BLUE=\033[1;94m
 TERMINAL_COLOR_RESET=\033[0m
 
 
+BUILD_FILE_PATH_ROOT=/Users/markoates/Repos/hexagon/bin/programs/data/builds/dumps
+BUILD_FILE_QUINTESSENCE_EXTRAPOLATION=$(BUILD_FILE_PATH_ROOT)/quintessence_build.txt
+BUILD_FILE_COMPONENT_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_object_build.txt
+BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_object_build.txt
+BUILD_FILE_COMPONENT_TESTS_RUN=$(BUILD_FILE_PATH_ROOT)/component_test_run.txt
+
 
 define output_terminal_message
 	$(eval compteur=$(shell echo $$(($(compteur)+1))))
@@ -157,30 +163,41 @@ main:
 
 
 
+## note: For this process, there are several build stages.  Some stages have their outputs dumpted to a
+## file located under $(BUILD_FILE_PATH_ROOT).  Both the stdout and stderr are captured using "some_command_here 2>&1 | tee file_to_dump"
+## For how output piping is used, see reference https://askubuntu.com/questions/420981/how-do-i-save-terminal-output-to-a-file
+## Also, to capture the exit status of the build stage (and not the "tee" process), "pipefail" is used, see this stack overflow:
+## https://stackoverflow.com/questions/6871859/piping-command-output-to-tee-but-also-save-exit-code-of-command
+## Also, see also "$pipestatus" for a more ellaborate way to capture the exit status of each step in the pipe
+
 focus:
 	$(call output_terminal_message,"Announce focus build info")
 	@echo "                    Project: $(PROJECT_BASE_DIRECTORY)"
 	@echo "Focusing build on component: \033[48;5;27m$(FOCUSED_COMPONENT_NAME)$(TERMINAL_COLOR_RESET)"
 	@echo "          testing filter in: \033[48;5;27m$(FOCUSED_TEST_FILTER)$(TERMINAL_COLOR_RESET)"
-	$(call output_terminal_message,"Signal to Hexagon build has started")
+	$(call output_terminal_message,"Signal to Hexagon build has started and clear builds/dumps/ files")
 	@echo "started" > $(BUILD_STATUS_SIGNALING_FILENAME)
+	@-rm $(BUILD_FILE_QUINTESSENCE_EXTRAPOLATION)
+	@-rm $(BUILD_FILE_COMPONENT_OBJECT_BUILD)
+	@-rm $(BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD)
+	@-rm $(BUILD_FILE_COMPONENT_TESTS_RUN)
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@echo "generating_sources_files_from_quintessence" > $(BUILD_STATUS_SIGNALING_FILENAME)
-	@make quintessences -j8
+	@set -o pipefail && (make quintessences -j8 2>&1 | tee $(BUILD_FILE_QUINTESSENCE_EXTRAPOLATION))
 	$(call output_terminal_message,"Make all the component object files")
 	@echo "building_component_object_files" > $(BUILD_STATUS_SIGNALING_FILENAME)
-	@make objects
+	@set -o pipefail && (make objects 2>&1 | tee $(BUILD_FILE_COMPONENT_OBJECT_BUILD))
 	$(call output_terminal_message, "Delete the existing focused component test object and test binary")
 	@echo "delete_focused_component_test_object_file_and_test_executable" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@-rm obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
 	@-rm bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Make the focused component test")
 	@echo "build_focused_component_test_object_file_and_test_executable" > $(BUILD_STATUS_SIGNALING_FILENAME)
-	@make obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
+	@set -o pipefail && (make obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o 2>&1 | tee $(BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD))
 	@make bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Run the focused component test")
 	@echo "run_test_for_focused_component" > $(BUILD_STATUS_SIGNALING_FILENAME)
-	@(./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_FILTER)* && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
+	@((set -o pipefail && (./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_FILTER)* 2>&1 | tee $(BUILD_FILE_COMPONENT_TESTS_RUN))) && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
 	$(call output_terminal_message,"Make all the programs")
 	@echo "make_all_programs" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make programs -j8
