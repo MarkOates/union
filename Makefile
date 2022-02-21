@@ -120,7 +120,7 @@ BUILD_FILE_PATH_ROOT=/Users/markoates/Repos/hexagon/bin/programs/data/builds/dum
 BUILD_FILE_QUINTESSENCE_EXTRAPOLATION=$(BUILD_FILE_PATH_ROOT)/quintessence_build.txt
 BUILD_FILE_COMPONENT_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_object_build.txt
 BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_object_build.txt
-BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_executable.txt  ## TODO incorporate this
+BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_executable.txt
 BUILD_FILE_COMPONENT_TESTS_RUN=$(BUILD_FILE_PATH_ROOT)/component_test_run.txt
 
 
@@ -193,9 +193,10 @@ focus:
 	@-rm obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
 	@-rm bin/tests/$(FOCUSED_COMPONENT_NAME)Test
 	$(call output_terminal_message,"Make the focused component test")
-	@echo "build_focused_component_test_object_file_and_test_executable" > $(BUILD_STATUS_SIGNALING_FILENAME)
+	@echo "build_focused_component_test_object_file" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@set -o pipefail && (make obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o 2>&1 | tee $(BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD))
-	@make bin/tests/$(FOCUSED_COMPONENT_NAME)Test  #TODO: add $(BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD)
+	@echo "build_focused_component_test_executable" > $(BUILD_STATUS_SIGNALING_FILENAME)
+	@set -o pipefail && (make bin/tests/$(FOCUSED_COMPONENT_NAME)Test 2>&1 | tee $(BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD))
 	$(call output_terminal_message,"Run the focused component test")
 	@echo "run_test_for_focused_component" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@((set -o pipefail && (./bin/tests/$(FOCUSED_COMPONENT_NAME)Test --gtest_filter=*$(FOCUSED_TEST_FILTER)* 2>&1 | tee $(BUILD_FILE_COMPONENT_TESTS_RUN))) && (make celebrate_passing_tests) || (make signal_failing_tests && exit 1) )
