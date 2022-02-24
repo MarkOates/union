@@ -1,7 +1,6 @@
 # see this SO for techniques in using a separate file to define variables
 # https://unix.stackexchange.com/questions/235223/makefile-include-env-file
 
-
 FOCUSED_PROJECT_FOLDER_FILENAME=/Users/markoates/Repos/hexagon/bin/programs/data/tmp/current_project_directory.txt
 # PROJECT_BASE_DIRECTORY := $$PWD
 PROJECT_BASE_DIRECTORY=`cat ${FOCUSED_PROJECT_FOLDER_FILENAME}`
@@ -181,6 +180,7 @@ focus:
 	@-rm $(BUILD_FILE_QUINTESSENCE_EXTRAPOLATION)
 	@-rm $(BUILD_FILE_COMPONENT_OBJECT_BUILD)
 	@-rm $(BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD)
+	@-rm $(BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD)
 	@-rm $(BUILD_FILE_COMPONENT_TESTS_RUN)
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@echo "generating_sources_files_from_quintessence" > $(BUILD_STATUS_SIGNALING_FILENAME)
