@@ -84,10 +84,12 @@ SOURCES := $(shell find src -name '*.cpp')
 QUINTESSENCE_SOURCES := $(shell find quintessence -name '*.q.yml')
 PROGRAM_SOURCES := $(shell find programs -name '*.cpp')
 EXAMPLE_SOURCES := $(shell find examples -name '*.cpp')
+DEMO_SOURCES := $(shell find demos -name '*.cpp')
 TEST_SOURCES := $(shell find tests -name '*Test.cpp')
 OBJECTS := $(SOURCES:src/%.cpp=obj/%.o)
 PROGRAMS := $(PROGRAM_SOURCES:programs/%.cpp=bin/programs/%)
 EXAMPLES := $(EXAMPLE_SOURCES:examples/%.cpp=bin/examples/%)
+DEMOS := $(DEMO_SOURCES:demos/%.cpp=bin/demos/%)
 TEST_OBJECTS := $(TEST_SOURCES:tests/%.cpp=obj/tests/%.o)
 LIBRARY_NAME := lib/lib$(PROJECT_NAME)-$(VERSION_NUMBER).a
 INDIVIDUAL_TEST_EXECUTABLES := $(TEST_SOURCES:tests/%.cpp=bin/tests/%)
@@ -133,7 +135,7 @@ endef
 
 
 
-.PHONY: main quintessence programs objects examples library tests docs run_tests
+.PHONY: main quintessence programs objects examples demos library tests docs run_tests
 
 
 
@@ -156,6 +158,8 @@ main:
 	@make programs -j8
 	$(call output_terminal_message,"Make all the example programs")
 	@make examples -j8
+	$(call output_terminal_message,"Make all the demo programs")
+	@make demos -j8
 	$(call output_terminal_message,"Update the documentation")
 	@make docs
 	$(call output_terminal_message,"Celebrate successful build")
@@ -230,6 +234,10 @@ objects: $(OBJECTS)
 
 
 examples: $(EXAMPLES)
+
+
+
+demos: $(DEMOS)
 
 
 
@@ -339,6 +347,15 @@ bin/examples/%: examples/%.cpp $(OBJECTS)
 
 
 
+bin/demos/%: demos/%.cpp $(OBJECTS)
+	@mkdir -p $(@D)
+	@printf "compiling demo \e[1m\e[36m$<\033[0m..."
+	@g++ -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@echo "done. Executable at \033[1m\033[32m$@\033[0m"
+
+
+
+
 obj/%.o: src/%.cpp
 	@mkdir -p $(@D)
 	@printf "compiling object file \e[1m\e[34m$<\033[0m..."
@@ -393,6 +410,7 @@ clean:
 	-rm -rdf obj/
 	-rm $(PROGRAMS)
 	-rm $(EXAMPLES)
+	-rm $(DEMOS)
 	-rm $(ALL_COMPILED_EXECUTABLES_IN_BIN)
 
 
