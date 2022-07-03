@@ -207,6 +207,9 @@ focus:
 	$(call output_terminal_message,"Make all the programs")
 	@echo "make_all_programs" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make programs -j8
+	$(call output_terminal_message,"Make the library")
+	@echo "make_library" > $(BUILD_STATUS_SIGNALING_FILENAME)
+	@make library -j8
 	$(call output_terminal_message,"Update the documentation")
 	@echo "make_documentation" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make docs
