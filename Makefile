@@ -61,7 +61,7 @@ OUTPUT_BANNER_EXECUTABLE=~/Repos/blast/bin/programs/build_celebrator
 
 ALLEGRO_LIBS=allegro_color allegro_font allegro_ttf allegro_dialog allegro_audio allegro_acodec allegro_primitives allegro_image allegro
 ALLEGRO_LIBS_MAIN=$(ALLEGRO_LIBS) allegro_main
-ALLEGRO_FLARE_LIB=allegro_flare-0.9.0wip
+ALLEGRO_FLARE_LIB=allegro_flare-0.8.11wip
 GOOGLE_TEST_LIBS=gtest
 GOOGLE_MOCK_LIBS=gmock
 NCURSES_LIB=ncurses
