@@ -20,11 +20,12 @@ endif
 
 PROJECT_NAME=mylibrary
 VERSION_NUMBER=0.0.1
-LIBS_ROOT=/Users/markoates/Repos
 ## This is a temporary hack to have union/Makefile build with allegro_flare
 ifeq ($(OS),Windows_NT)
-	ASIO_LIBS_ROOT=/home/Mark/Repos
+	LIBS_ROOT=/home/Mark/Repos
+	ASIO_LIBS_ROOT$(LIBS_ROOM)
 else
+	LIBS_ROOT=/Users/markoates/Repos
 	ASIO_LIBS_ROOT=$(LIBS_ROOT)
 endif
 ALLEGRO_INCLUDE_DIR=$(LIBS_ROOT)/allegro5/include
