@@ -339,7 +339,7 @@ celebrate_everything_built:
 
 bin/programs/%: programs/%.cpp $(OBJECTS)
 	@mkdir -p $(@D)
-	@printf "compiling program \e[1m\e[36m$<\033[0m..."
+	@printf "Compiling program \e[1m\e[36m$<\033[0m...\n"
 	@g++ -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_VARIABLE_WARNING_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -I$(NCURSES_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@echo "done. Executable at \033[1m\033[32m$@\033[0m"
 
@@ -347,7 +347,7 @@ bin/programs/%: programs/%.cpp $(OBJECTS)
 
 bin/examples/%: examples/%.cpp $(OBJECTS)
 	@mkdir -p $(@D)
-	@printf "compiling example \e[1m\e[36m$<\033[0m..."
+	@printf "Compiling example \e[1m\e[36m$<\033[0m...\n"
 	@g++ -std=c++17 $(ERROR_LIMIT_FLAG) $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_VARIABLE_WARNING_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@echo "done. Executable at \033[1m\033[32m$@\033[0m"
 
@@ -355,7 +355,7 @@ bin/examples/%: examples/%.cpp $(OBJECTS)
 
 bin/demos/%: demos/%.cpp $(OBJECTS)
 	@mkdir -p $(@D)
-	@printf "compiling demo \e[1m\e[36m$<\033[0m..."
+	@printf "Compiling demo \e[1m\e[36m$<\033[0m...\n"
 	@g++ -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@echo "done. Executable at \033[1m\033[32m$@\033[0m"
 
@@ -364,14 +364,14 @@ bin/demos/%: demos/%.cpp $(OBJECTS)
 
 obj/%.o: src/%.cpp
 	@mkdir -p $(@D)
-	@printf "compiling object file \e[1m\e[34m$<\033[0m..."
+	@printf "Compiling object file \e[1m\e[34m$<\033[0m...\n"
 	g++ -c $(ERROR_LIMIT_FLAG) -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -D_XOPEN_SOURCE_EXTENDED -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@echo "done. object at \033[1m\033[32m$@\033[0m"
 
 
 
 $(LIBRARY_NAME): $(OBJECTS)
-	@printf "compiling library \e[1m\e[36m$@\033[0m..."
+	@printf "Compiling library \e[1m\e[36m$@\033[0m...\n"
 ifeq ($(OBJECTS),)
 	@echo "\033[1m\033[32mnothing to be done, there are no objects to build into a library\033[0m."
 else
@@ -383,7 +383,7 @@ endif
 
 obj/tests/%.o: tests/%.cpp
 	@mkdir -p $(@D)
-	@printf "compiling test object file \e[1m\e[36m$<\033[0m..."
+	@printf "Compiling test object file \e[1m\e[36m$<\033[0m...\n"
 	@g++ -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@echo "done. Object at \033[1m\033[32m$@\033[0m"
 
@@ -391,7 +391,7 @@ obj/tests/%.o: tests/%.cpp
 
 obj/tests/TestRunner.o: tests/TestRunner.cpp
 	@mkdir -p $(@D)
-	@printf "compiling test object for TestRunner \e[1m\e[36m$<\033[0m..."
+	@printf "Compiling test object for TestRunner \e[1m\e[36m$<\033[0m...\n"
 	@g++ -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@echo "done. Object at \033[1m\033[32m$@\033[0m"
 
@@ -399,7 +399,7 @@ obj/tests/TestRunner.o: tests/TestRunner.cpp
 
 bin/tests/%: obj/tests/%.o obj/tests/TestRunner.o
 	@mkdir -p $(@D)
-	@printf "compiling standalone test \e[1m\e[36m$<\033[0m..."
+	@printf "Compiling standalone test \e[1m\e[36m$<\033[0m...\n"
 	@g++ -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $< obj/tests/TestRunner.o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@echo "done. Executable at \033[1m\033[32m$@\033[0m"
 
@@ -407,7 +407,7 @@ bin/tests/%: obj/tests/%.o obj/tests/TestRunner.o
 
 bin/run_all_tests: $(TEST_OBJECTS) obj/tests/TestRunner.o
 	@mkdir -p $(@D)
-	@printf "compiling run_all_tests executable \e[1m\e[36m$@\033[0m..."
+	@printf "Compiling run_all_tests executable \e[1m\e[36m$@\033[0m...\n"
 	@g++ -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $(TEST_OBJECTS) obj/tests/TestRunner.o -o $@ -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 
 
