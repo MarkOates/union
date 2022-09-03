@@ -24,7 +24,7 @@ VERSION_NUMBER=0.0.1
 ## This is a temporary hack to have union/Makefile build with allegro_flare
 ifeq ($(OS),Windows_NT)
 	LIBS_ROOT=/home/Mark/Repos
-	ASIO_LIBS_ROOT=$(LIBS_ROOM)
+	ASIO_LIBS_ROOT=$(LIBS_ROOT)
 else
 	LIBS_ROOT=/Users/markoates/Repos
 	ASIO_LIBS_ROOT=$(LIBS_ROOT)
