@@ -104,6 +104,15 @@ endif
 
 
 
+## Counts
+NUMBER_OF_QUINTESSENCE_SOURCES := $(words $(QUINTESSENCE_SOURCES))
+NUMBER_OF_SOURCES := $(words $(SOURCES))
+NUMBER_OF_PROGRAM_SOURCES := $(words $(PROGRAM_SOURCES))
+
+
+
+
+
 ALLEGRO_LIBS_LINK_ARGS := $(ALLEGRO_LIBS:%=-l%)
 ALLEGRO_LIBS_LINK_MAIN_ARGS := $(ALLEGRO_LIBS_MAIN:%=-l%)
 ifeq ($(OS),Windows_NT)
@@ -410,6 +419,14 @@ bin/run_all_tests: $(TEST_OBJECTS) obj/tests/TestRunner.o
 	@printf "Compiling run_all_tests executable \e[1m\e[36m$@\033[0m\n"
 	@g++ -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $(TEST_OBJECTS) obj/tests/TestRunner.o -o $@ -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@printf "run_all_tests executable at \e[1m\e[36m$@\033[0m compiled successfully.\n"
+
+
+
+list:
+	@echo $(NUMBER_OF_QUINTESSENCE_SOURCES)
+	@for number in $(QUINTESSENCE_SOURCES) ; do \
+	   echo $$number ; \
+  done
 
 
 
