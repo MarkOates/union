@@ -422,9 +422,22 @@ bin/run_all_tests: $(TEST_OBJECTS) obj/tests/TestRunner.o
 
 
 
-list:
-	@echo $(NUMBER_OF_QUINTESSENCE_SOURCES)
+list_quintessence_sources:
 	@for number in $(QUINTESSENCE_SOURCES) ; do \
+	   echo $$number ; \
+  done
+
+
+
+list_sources:
+	@for number in $(SOURCES) ; do \
+	   echo $$number ; \
+  done
+
+
+
+list_program_sources:
+	@for number in $(PROGRAM_SOURCES) ; do \
 	   echo $$number ; \
   done
 
