@@ -423,22 +423,33 @@ bin/run_all_tests: $(TEST_OBJECTS) obj/tests/TestRunner.o
 
 
 list_quintessence_sources:
-	@for number in $(QUINTESSENCE_SOURCES) ; do \
-	   echo $$number ; \
+	@for item in $(QUINTESSENCE_SOURCES) ; do \
+	   echo $$item ; \
   done
 
 
 
 list_sources:
-	@for number in $(SOURCES) ; do \
-	   echo $$number ; \
+	@for item in $(SOURCES) ; do \
+	   echo $$item ; \
   done
 
 
+list_objects:
+	@for item in $(OBJECTS) ; do \
+	   echo $$item ; \
+  done
+
+
+list_test_objects:
+	@for item in $(TEST_OBJECTS) ; do \
+	   echo $$item ; \
+  done
+
 
 list_program_sources:
-	@for number in $(PROGRAM_SOURCES) ; do \
-	   echo $$number ; \
+	@for item in $(PROGRAM_SOURCES) ; do \
+	   echo $$item ; \
   done
 
 
