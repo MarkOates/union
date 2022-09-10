@@ -90,6 +90,7 @@ EXAMPLE_SOURCES := $(shell find examples -name '*.cpp')
 DEMO_SOURCES := $(shell find demos -name '*.cpp')
 TEST_SOURCES := $(shell find tests -name '*Test.cpp')
 OBJECTS := $(SOURCES:src/%.cpp=obj/%.o)
+DEPS := $(SOURCES:src/%.cpp=.deps/%.d)
 PROGRAMS := $(PROGRAM_SOURCES:programs/%.cpp=bin/programs/%)
 EXAMPLES := $(EXAMPLE_SOURCES:examples/%.cpp=bin/examples/%)
 DEMOS := $(DEMO_SOURCES:demos/%.cpp=bin/demos/%)
@@ -147,7 +148,7 @@ endef
 
 
 
-.PHONY: main quintessence programs objects examples demos library tests docs run_tests
+.PHONY: main quintessence programs objects examples demos library tests docs run_tests deps
 
 
 
@@ -155,6 +156,8 @@ main:
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@make quintessences -j8
 	$(call output_terminal_message,"Make all the component object files")
+	@make deps -j8
+	$(call output_terminal_message,"Make all the dependency files")
 	@make objects -j8
 	$(call output_terminal_message,"Make all the test object files")
 	@make test_objects -j8
@@ -272,6 +275,10 @@ all_tests: bin/run_all_tests
 
 
 
+deps: $(DEPS)
+
+
+
 docs:
 	@mkdir -p ./docs
 	ruby /Users/markoates/Repos/blast/scripts/build_documentation.rb
@@ -344,6 +351,13 @@ celebrate_everything_built:
 	@printf ' %.0s' {1..$(hcolumns)}
 	@echo "\033[1m\033[32m$(TERMINAL_COLOR_GREEN)████$(TERMINAL_COLOR_YELLOW)🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 🀫 $(TERMINAL_COLOR_GREEN)████$(TERMINAL_COLOR_RESET)\033[0m"
 
+
+
+.deps/%.d: src/%.cpp
+	@mkdir -p $(@D)
+	@printf "Compiling dependency \e[1m\e[36m$<\033[0m\n"
+	@g++ -MM $< > $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR)
+	@echo "Dependency at \033[1m\033[32m$@\033[0m created successfully.\n"
 
 
 bin/programs/%: programs/%.cpp $(OBJECTS)
@@ -460,6 +474,7 @@ clean:
 	-rm $(EXAMPLES)
 	-rm $(DEMOS)
 	-rm $(ALL_COMPILED_EXECUTABLES_IN_BIN)
+	-rm $(DEPS)
 
 
 
