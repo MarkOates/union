@@ -356,7 +356,7 @@ celebrate_everything_built:
 .deps/%.d: src/%.cpp
 	@mkdir -p $(@D)
 	@printf "Compiling dependency \e[1m\e[36m$<\033[0m\n"
-	@g++ -MM $< > $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR)
+	@g++ -std=c++17 -MM $< > $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR)
 	@echo "Dependency at \033[1m\033[32m$@\033[0m created successfully.\n"
 
 
