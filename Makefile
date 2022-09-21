@@ -132,6 +132,7 @@ TERMINAL_COLOR_RESET=\033[0m
 
 BUILD_FILE_PATH_ROOT=/Users/markoates/Repos/hexagon/bin/programs/data/builds/dumps
 BUILD_FILE_QUINTESSENCE_EXTRAPOLATION=$(BUILD_FILE_PATH_ROOT)/quintessence_build.txt
+BUILD_FILE_DEPS_BUILD=$(BUILD_FILE_PATH_ROOT)/deps_build.txt
 BUILD_FILE_COMPONENT_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_object_build.txt
 BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_object_build.txt
 BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_executable.txt
@@ -204,6 +205,9 @@ focus:
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@echo "generating_sources_files_from_quintessence" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@set -o pipefail && (make quintessences -j8 2>&1 | tee $(BUILD_FILE_QUINTESSENCE_EXTRAPOLATION))
+	$(call output_terminal_message,"Build dependency file for component")
+	@echo "building_dependency_file_for_component" > $(BUILD_STATUS_SIGNALING_FILENAME)
+	@set -o pipefail && (make deps -j8 2>&1 | tee $(BUILD_FILE_DEPS_BUILD))
 	$(call output_terminal_message,"Make all the component object files")
 	@echo "building_component_object_files" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@set -o pipefail && (make objects 2>&1 | tee $(BUILD_FILE_COMPONENT_OBJECT_BUILD))
