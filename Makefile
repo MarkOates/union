@@ -481,6 +481,10 @@ clean:
 	-rm $(DEPS)
 
 
+newlib:
+	-rm lib/liballegro_flare-0.8.11wip.a
+	make library
+
 
 fresh:
 	make clean
