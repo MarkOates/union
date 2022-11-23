@@ -275,7 +275,7 @@ tests: $(INDIVIDUAL_TEST_EXECUTABLES)
 
 
 
-all_tests: bin/run_all_tests
+all_tests: $(TEST_OBJECTS) bin/run_all_tests
 
 
 
@@ -476,6 +476,9 @@ clean:
 	-rm -rdf obj/
 	-rm $(PROGRAMS)
 	-rm $(EXAMPLES)
+	-rm $(TEST_OBJECTS)
+	-rm $(INDIVIDUAL_TEST_EXECUTABLES)
+	-rm bin/run_all_tests
 	-rm $(DEMOS)
 	-rm $(ALL_COMPILED_EXECUTABLES_IN_BIN)
 	-rm $(DEPS)
