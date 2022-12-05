@@ -471,6 +471,13 @@ list_program_sources:
   done
 
 
+list_test_executables:
+	@for item in $(INDIVIDUAL_TEST_EXECUTABLES) ; do \
+	   echo $$item ; \
+	done
+
+
+
 
 clean:
 	-rm -rdf obj/
