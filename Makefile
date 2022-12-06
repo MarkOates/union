@@ -18,6 +18,9 @@ else
 endif
 
 
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+
 
 PROJECT_NAME=mylibrary
 VERSION_NUMBER=0.0.1
@@ -60,6 +63,8 @@ YAML_CPP_INCLUDE_DIR=$(YAML_CPP_DIR)/include
 
 QUINTESSENCE_BUILDER_EXECUTABLE=~/Repos/blast/bin/programs/quintessence_from_yaml
 OUTPUT_BANNER_EXECUTABLE=~/Repos/blast/bin/programs/build_celebrator
+SOURCE_RELEASER_EXECUTABLE=~/Repos/blast/bin/programs/create_source_release
+
 
 
 ALLEGRO_LIBS=allegro_color allegro_font allegro_ttf allegro_dialog allegro_audio allegro_acodec allegro_primitives allegro_image allegro
@@ -286,6 +291,10 @@ deps: $(DEPS)
 docs:
 	@mkdir -p ./docs
 	ruby /Users/markoates/Repos/blast/scripts/build_documentation.rb
+
+
+source_release:
+	$(SOURCE_RELEASER_EXECUTABLE) $(current_dir)
 
 
 
