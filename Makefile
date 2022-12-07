@@ -427,7 +427,7 @@ obj/tests/%.o: tests/%.cpp
 
 obj/tests/TestRunner.o: tests/TestRunner.cpp
 	@mkdir -p $(@D)
-	@printf "Compiling test object for TestRunner \e[1m\e[36m$<\033[0m\n"
+	@printf "Compiling test object for TestRunner \e[1m\e[36m$@\033[0m\n"
 	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@printf "Object for TestRunner at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
@@ -435,9 +435,9 @@ obj/tests/TestRunner.o: tests/TestRunner.cpp
 
 bin/tests/%: obj/tests/%.o obj/tests/TestRunner.o
 	@mkdir -p $(@D)
-	@printf "Compiling standalone test executable at \e[1m\e[36m$<\033[0m\n"
+	@printf "Compiling standalone test executable at \e[1m\e[36m$@\033[0m\n"
 	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $< obj/tests/TestRunner.o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
-	@printf "Standalone executable at \033[1m\033[32m$<\033[0m compiled successfully.\n"
+	@printf "Standalone executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
 
