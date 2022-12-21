@@ -245,6 +245,13 @@ focus:
 
 
 
+fast:
+	make clean
+	make objects -j8
+	make library
+
+
+
 quintessences: $(QUINTESSENCE_SOURCES)
 	@[ -f $(QUINTESSENCE_BUILDER_EXECUTABLE) ] || echo "The needed executable $(QUINTESSENCE_BUILDER_EXECUTABLE) was not found"
 	@find quintessence -name '*.q.yml' | xargs $(QUINTESSENCE_BUILDER_EXECUTABLE) --less_verbose -f
