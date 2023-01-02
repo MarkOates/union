@@ -308,7 +308,7 @@ source_release:
 define output_pass_banner
 	$(eval columns=$(shell tput cols))
 	@echo
-	@${OUTPUT_BANNER_EXECUTABLE} -c green -l $(columns) -P
+	@${OUTPUT_BANNER_EXECUTABLE} -c green -l $(columns) --pass
 	@echo
 endef
 
