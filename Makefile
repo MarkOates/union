@@ -314,6 +314,16 @@ endef
 
 
 
+define output_component_built_banner
+	$(eval columns=$(shell tput cols))
+	@echo
+	@${OUTPUT_BANNER_EXECUTABLE} -c green -l $(columns) --component_built
+	@echo
+endef
+
+
+
+
 celebrate_passing_tests:
 	$(call output_pass_banner)
 
@@ -353,6 +363,11 @@ signal_failing_tests:
 
 
 celebrate_built_component:
+	$(call output_component_built_banner)
+
+
+
+celebrate_built_component_legacy:
 	$(eval columns=$(shell tput cols))
 	$(eval banner_width=105)
 	$(eval hcolumns=$(shell expr $(columns) / 2 - $(banner_width) / 2))
