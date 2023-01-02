@@ -305,7 +305,20 @@ source_release:
 
 
 
+define output_pass_banner
+	$(eval columns=$(shell tput cols))
+	@echo
+	@${OUTPUT_BANNER_EXECUTABLE} -c green -l $(columns) -P
+	@echo
+endef
+
+
+
 celebrate_passing_tests:
+	$(call output_pass_banner)
+
+
+celebrate_passing_tests_legacy:
 	$(eval columns=$(shell tput cols))
 	$(eval banner_width=103)
 	$(eval hcolumns=$(shell expr $(columns) / 2 - $(banner_width) / 2))
