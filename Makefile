@@ -309,13 +309,11 @@ source_release:
 
 
 win64_release:
-	@echo "TODO: pass arguments to this make command"
-	$(WIN64_RELEASER_EXECUTABLE)
+	$(WIN64_RELEASER_EXECUTABLE) $(GOOGLE_DRIVE_FILE_ID) $(EXPECTED_RELEASE_FOLDER_NAME)
 
 
 
 macos_release:
-	@echo "TODO: pass arguments to this make command"
 	$(MACOS_RELEASER_EXECUTABLE) $(RELEASE_PROJECT_NAME) $(RELEASE_FOLDER_NAME)
 
 
