@@ -111,15 +111,15 @@ curl -L -o $TEMP_BUILD_DIR$FOOBAR $SOURCE_URL
 
 ## TODO: CRITICAL: verify and validate that the expected folder exists in the zip file
 
-#(cd $TEMP_BUILD_DIR &&\
-#if [ -d $SOURCE_FOLDER_NAME ] \
-#then
-    #echo "Directory /path/to/dir exists."
-#else
-    #echo "Error: Directory /path/to/dir does not exists."
-    #exit 6
-#fi
-#)
+(cd $TEMP_BUILD_DIR &&\
+if [ -d $SOURCE_FOLDER_NAME ]
+then
+    echo "Directory $SOURCE_FOLDER_NAME exists."
+else
+    echo "Error: Directory $SOURCE_FOLDER_NAME does not exist in the unzipped file."
+    exit 6
+fi
+) || exit 6
 
 (cd $TEMP_BUILD_DIR && cd $SOURCE_FOLDER_NAME && make)
 
