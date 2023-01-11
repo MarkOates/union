@@ -22,7 +22,7 @@ mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
 
-PROJECT_NAME=mylibrary
+PROJECT_LIB_NAME=mylibrary
 VERSION_NUMBER=0.0.1
 ## This is a temporary hack to have union/Makefile build with allegro_flare
 ifeq ($(OS),Windows_NT)
@@ -56,7 +56,7 @@ YAML_CPP_INCLUDE_DIR=$(YAML_CPP_DIR)/include
 
 
 # ProjectMakefile can be included in each project repo, and includes values like
-# PROJECT_NAME and VERSION_NUMBER
+# PROJECT_LIB_NAME and VERSION_NUMBER
 -include ProjectMakefile
 
 
@@ -102,7 +102,7 @@ PROGRAMS := $(PROGRAM_SOURCES:programs/%.cpp=bin/programs/%)
 EXAMPLES := $(EXAMPLE_SOURCES:examples/%.cpp=bin/examples/%)
 DEMOS := $(DEMO_SOURCES:demos/%.cpp=bin/demos/%)
 TEST_OBJECTS := $(TEST_SOURCES:tests/%.cpp=obj/tests/%.o)
-LIBRARY_NAME := lib/lib$(PROJECT_NAME)-$(VERSION_NUMBER).a
+LIBRARY_NAME := lib/lib$(PROJECT_LIB_NAME)-$(VERSION_NUMBER).a
 INDIVIDUAL_TEST_EXECUTABLES := $(TEST_SOURCES:tests/%.cpp=bin/tests/%)
 ifeq ($(OS),Windows_NT)
 	ALL_COMPILED_EXECUTABLES_IN_BIN := $(shell find bin/**/* -perm /111 -type f)
@@ -316,7 +316,7 @@ win64_release:
 
 macos_release:
 	@echo "TODO: pass arguments to this make command"
-	$(MACOS_RELEASER_EXECUTABLE)
+	$(MACOS_RELEASER_EXECUTABLE) $(RELEASE_PROJECT_NAME) $(RELEASE_FOLDER_NAME)
 
 
 
