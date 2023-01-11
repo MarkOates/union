@@ -64,6 +64,7 @@ YAML_CPP_INCLUDE_DIR=$(YAML_CPP_DIR)/include
 QUINTESSENCE_BUILDER_EXECUTABLE=~/Repos/blast/bin/programs/quintessence_from_yaml
 OUTPUT_BANNER_EXECUTABLE=~/Repos/blast/bin/programs/build_celebrator
 SOURCE_RELEASER_EXECUTABLE=~/Repos/blast/bin/programs/create_source_release
+WIN64_BUILDER_SCRIPT=~/Repos/union/scripts/build_win64_release.sh
 
 
 
@@ -300,8 +301,15 @@ docs:
 	ruby /Users/markoates/Repos/blast/scripts/build_documentation.rb
 
 
+
 source_release:
 	$(SOURCE_RELEASER_EXECUTABLE) $(current_dir)
+
+
+
+win64_release:
+	@echo "TODO: pass arguments to this make command"
+	$(WIN64_BUILDER_SCRIPT)
 
 
 

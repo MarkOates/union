@@ -1,6 +1,9 @@
 #!/bin/sh
 
 
+## TODO: guard this with check that you are actually on windows
+
+
 ## CRITICAL: validate an arg is present representing the download token
 
 if [ $# -ne 2 ]; then
@@ -9,7 +12,7 @@ if [ $# -ne 2 ]; then
     echo ""
     echo "Example:"
     echo ""
-    echo "./bin/scripts 15hxKFtqS_wSF7JeNXAapgarmYrEK5bdi TheWeepingHouse-SourceRelease-221209225033UTC"
+    echo "./scripts/build_win64_release.sh 15hxKFtqS_wSF7JeNXAapgarmYrEK5bdi TheWeepingHouse-SourceRelease-221209225033UTC"
     exit 1
 fi
 
