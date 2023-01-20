@@ -12,6 +12,8 @@ FOCUSED_TEST_FILTER=${FILTER}
 
 ifeq ($(OS),Windows_NT)
 else
+	ERROR_IF_INCORRECT_RETURN_TYPE=-Werror=return-type
+	ERROR_IF_UNINITIALIZED=-Werror=uninitialized
 	UNUSED_ARGUMENTS_FLAG=-Qunused-arguments
 	DISABLE_UNUSED_VARIABLE_WARNING_FLAG=-Wno-unused-variable
 	ERROR_LIMIT_FLAG=-ferror-limit=1
@@ -249,6 +251,7 @@ focus:
 
 fast:
 	make clean
+	make quintessences -j8
 	make objects -j8
 	make library
 
@@ -473,7 +476,7 @@ bin/demos/%: demos/%.cpp $(OBJECTS)
 obj/%.o: src/%.cpp
 	@mkdir -p $(@D)
 	@printf "Compiling object file \e[1m\e[34m$@\033[0m\n"
-	@g++ -g -c $(ERROR_LIMIT_FLAG) -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -D_XOPEN_SOURCE_EXTENDED -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@g++ -g -c $(ERROR_LIMIT_FLAG) -std=c++17 $(UNUSED_ARGUMENTS_FLAG) $(ERROR_IF_INCORRECT_RETURN_TYPE) $(ERROR_IF_UNINITIALIZED) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -D_XOPEN_SOURCE_EXTENDED -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@printf "Object file at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
