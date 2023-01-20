@@ -74,6 +74,7 @@ MACOS_RELEASER_EXECUTABLE=~/Repos/hexagon/bin/programs/macos_release_builder
 ALLEGRO_LIBS=allegro_color allegro_font allegro_ttf allegro_dialog allegro_audio allegro_acodec allegro_primitives allegro_image allegro
 ALLEGRO_LIBS_MAIN=$(ALLEGRO_LIBS) allegro_main
 ALLEGRO_FLARE_LIB=allegro_flare-0.8.11wip
+ALLEGRO_FLARE_LIB_FOR_TESTS=allegro_flare-0.8.11wip-for_tests
 GOOGLE_TEST_LIBS=gtest
 GOOGLE_MOCK_LIBS=gmock
 NCURSES_LIB=ncurses
@@ -104,6 +105,7 @@ PROGRAMS := $(PROGRAM_SOURCES:programs/%.cpp=bin/programs/%)
 EXAMPLES := $(EXAMPLE_SOURCES:examples/%.cpp=bin/examples/%)
 DEMOS := $(DEMO_SOURCES:demos/%.cpp=bin/demos/%)
 TEST_OBJECTS := $(TEST_SOURCES:tests/%.cpp=obj/tests/%.o)
+LIBRARY_FOR_TESTS_NAME := lib/lib$(PROJECT_LIB_NAME)-$(VERSION_NUMBER)-for_tests.a
 LIBRARY_NAME := lib/lib$(PROJECT_LIB_NAME)-$(VERSION_NUMBER).a
 INDIVIDUAL_TEST_EXECUTABLES := $(TEST_SOURCES:tests/%.cpp=bin/tests/%)
 ifeq ($(OS),Windows_NT)
@@ -171,6 +173,8 @@ main:
 	@make objects -j8
 	$(call output_terminal_message,"Make all the test object files")
 	@make test_objects -j8
+	$(call output_terminal_message,"Build the library-for-tests")
+	@make library_for_tests -j8
 	$(call output_terminal_message,"Make all the individual test executables")
 	@make tests -j8
 	$(call output_terminal_message,"Make single test executable containing all tests")
@@ -220,6 +224,9 @@ focus:
 	$(call output_terminal_message,"Make all the component object files")
 	@echo "building_component_object_files" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@set -o pipefail && (make objects 2>&1 | tee $(BUILD_FILE_COMPONENT_OBJECT_BUILD))
+	$(call output_terminal_message,"Make the library-for-tests")
+	@echo "make_library_for_tests" > $(BUILD_STATUS_SIGNALING_FILENAME)
+	@make library_for_tests -j8
 	$(call output_terminal_message, "Delete the existing focused component test object and test binary")
 	@echo "delete_focused_component_test_object_file_and_test_executable" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@-rm obj/tests/$(FOCUSED_COMPONENT_NAME)Test.o
@@ -277,6 +284,10 @@ examples: $(EXAMPLES)
 
 
 demos: $(DEMOS)
+
+
+
+library_for_tests: $(LIBRARY_FOR_TESTS_NAME)
 
 
 
@@ -481,13 +492,24 @@ obj/%.o: src/%.cpp
 
 
 
+$(LIBRARY_FOR_TESTS_NAME): $(OBJECTS)
+	@printf "Compiling library-for-tests \e[1m\e[36m$@\033[0m\n"
+ifeq ($(OBJECTS),)
+	@printf "\033[1m\033[32mnothing to be done, there are no objects to build into a library-for-tests\033[0m."
+else
+	@ar rs $(LIBRARY_FOR_TESTS_NAME) $^
+	@printf "done. Library-for-tests file at \033[1m\033[32m$@\033[0m\n"
+endif
+
+
+
 $(LIBRARY_NAME): $(OBJECTS)
 	@printf "Compiling library \e[1m\e[36m$@\033[0m\n"
 ifeq ($(OBJECTS),)
 	@printf "\033[1m\033[32mnothing to be done, there are no objects to build into a library\033[0m."
 else
 	@ar rs $(LIBRARY_NAME) $^
-	@printf "done. Library file at \033[1m\033[32m$@\033[0m"
+	@printf "done. Library file at \033[1m\033[32m$@\033[0m\n"
 endif
 
 
@@ -503,7 +525,7 @@ obj/tests/%.o: tests/%.cpp
 obj/tests/TestRunner.o: tests/TestRunner.cpp
 	@mkdir -p $(@D)
 	@printf "Compiling test object for TestRunner \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR)
 	@printf "Object for TestRunner at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -511,7 +533,7 @@ obj/tests/TestRunner.o: tests/TestRunner.cpp
 bin/tests/%: obj/tests/%.o obj/tests/TestRunner.o
 	@mkdir -p $(@D)
 	@printf "Compiling standalone test executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $< obj/tests/TestRunner.o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< obj/tests/TestRunner.o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS)
 	@printf "Standalone executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -519,7 +541,7 @@ bin/tests/%: obj/tests/%.o obj/tests/TestRunner.o
 bin/run_all_tests: $(TEST_OBJECTS) obj/tests/TestRunner.o
 	@mkdir -p $(@D)
 	@printf "Compiling run_all_tests executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $(TEST_OBJECTS) obj/tests/TestRunner.o -o $@ -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB) -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(TEST_OBJECTS) obj/tests/TestRunner.o -o $@ -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -L$(GOOGLE_TEST_LIB_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS)
 	@printf "run_all_tests executable at \e[1m\e[36m$@\033[0m compiled successfully.\n"
 
 
