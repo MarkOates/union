@@ -146,6 +146,9 @@ BUILD_FILE_PATH_ROOT=/Users/markoates/Repos/hexagon/bin/programs/data/builds/dum
 BUILD_FILE_QUINTESSENCE_EXTRAPOLATION=$(BUILD_FILE_PATH_ROOT)/quintessence_build.txt
 BUILD_FILE_DEPS_BUILD=$(BUILD_FILE_PATH_ROOT)/deps_build.txt
 BUILD_FILE_COMPONENT_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_object_build.txt
+# NOTE: this PROGRAMS_BUILD is currently not captured in daemus
+# TODO: include BUILD_FILE_PROGRAMS_BUILD file in deamus
+BUILD_FILE_PROGRAMS_BUILD=$(BUILD_FILE_PATH_ROOT)/programs_build.txt
 BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_object_build.txt
 BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD=$(BUILD_FILE_PATH_ROOT)/component_test_executable.txt
 BUILD_FILE_COMPONENT_TESTS_RUN=$(BUILD_FILE_PATH_ROOT)/component_test_run.txt
@@ -213,6 +216,7 @@ focus:
 	@echo "started" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@-rm $(BUILD_FILE_QUINTESSENCE_EXTRAPOLATION)
 	@-rm $(BUILD_FILE_COMPONENT_OBJECT_BUILD)
+	@-rm $(BUILD_FILE_PROGRAMS_BUILD)
 	@-rm $(BUILD_FILE_COMPONENT_TEST_OBJECT_BUILD)
 	@-rm $(BUILD_FILE_COMPONENT_TEST_EXECUTABLE_BUILD)
 	@-rm $(BUILD_FILE_COMPONENT_TESTS_RUN)
@@ -245,7 +249,7 @@ focus:
 	@make library -j8
 	$(call output_terminal_message,"Make all the programs")
 	@echo "make_all_programs" > $(BUILD_STATUS_SIGNALING_FILENAME)
-	@make programs -j8
+	@set -o pipefail && (make programs 2>&1 | tee $(BUILD_FILE_PROGRAMS_BUILD))
 	$(call output_terminal_message,"Update the documentation")
 	@echo "make_documentation" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make docs
