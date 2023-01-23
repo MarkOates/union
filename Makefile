@@ -57,6 +57,11 @@ YAML_CPP_INCLUDE_DIR=$(YAML_CPP_DIR)/include
 
 
 
+#TEST_RUNNER_PROGRAM_NAME=TestRunnerWithFocusedTestPreflightCheck
+TEST_RUNNER_PROGRAM_NAME=TestRunner
+
+
+
 # ProjectMakefile can be included in each project repo, and includes values like
 # PROJECT_LIB_NAME and VERSION_NUMBER
 -include ProjectMakefile
@@ -68,6 +73,10 @@ OUTPUT_BANNER_EXECUTABLE=~/Repos/blast/bin/programs/build_celebrator
 SOURCE_RELEASER_EXECUTABLE=~/Repos/blast/bin/programs/create_source_release
 WIN64_RELEASER_EXECUTABLE=~/Repos/union/scripts/build_win64_release.sh
 MACOS_RELEASER_EXECUTABLE=~/Repos/hexagon/bin/programs/macos_release_builder
+
+
+
+
 
 
 
@@ -527,26 +536,26 @@ obj/tests/%.o: tests/%.cpp
 
 
 
-obj/tests/TestRunner.o: tests/TestRunner.cpp
+obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o: tests/$(TEST_RUNNER_PROGRAM_NAME).cpp
 	@mkdir -p $(@D)
-	@printf "Compiling test object for TestRunner \e[1m\e[36m$@\033[0m\n"
+	@printf "Compiling test object for $(TEST_RUNNER_PROGRAM_NAME) \e[1m\e[36m$@\033[0m\n"
 	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR)
-	@printf "Object for TestRunner at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+	@printf "Object for $(TEST_RUNNER_PROGRAM_NAME) at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
 
-bin/tests/%: obj/tests/%.o obj/tests/TestRunner.o
+bin/tests/%: obj/tests/%.o obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
 	@mkdir -p $(@D)
 	@printf "Compiling standalone test executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< obj/tests/TestRunner.o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
 	@printf "Standalone executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
 
-bin/run_all_tests: $(TEST_OBJECTS) obj/tests/TestRunner.o
+bin/run_all_tests: $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
 	@mkdir -p $(@D)
 	@printf "Compiling run_all_tests executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(TEST_OBJECTS) obj/tests/TestRunner.o -o $@ -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(NCURSES_INCLUDE_DIR) -L$(NCURSES_LIB_DIR) -l$(NCURSES_LIB) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
 	@printf "run_all_tests executable at \e[1m\e[36m$@\033[0m compiled successfully.\n"
 
 
