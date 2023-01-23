@@ -265,6 +265,8 @@ focus:
 	$(call output_terminal_message,"Celebrate integrated component tests")
 	@echo "signal_component_built_and_integrated" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make celebrate_built_component
+	$(call output_terminal_message,"Run any post-build process if present in the ProjectMakefile")
+	$(POST_FOCUS_BUILD_COMMAND)
 	$(call output_terminal_message,"Signal to Hexagon that build has completed")
 	@echo "completed" > $(BUILD_STATUS_SIGNALING_FILENAME)
 
