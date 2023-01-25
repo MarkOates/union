@@ -258,7 +258,7 @@ focus:
 	@make library -j8
 	$(call output_terminal_message,"Make all the programs")
 	@echo "make_all_programs" > $(BUILD_STATUS_SIGNALING_FILENAME)
-	@set -o pipefail && (make programs 2>&1 | tee $(BUILD_FILE_PROGRAMS_BUILD))
+	@set -o pipefail && (make programs -j8 2>&1 | tee $(BUILD_FILE_PROGRAMS_BUILD))
 	$(call output_terminal_message,"Update the documentation")
 	@echo "make_documentation" > $(BUILD_STATUS_SIGNALING_FILENAME)
 	@make docs
