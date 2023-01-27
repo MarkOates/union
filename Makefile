@@ -218,7 +218,7 @@ endef
 main:
 	$(call output_terminal_message,"Compose componets from all quintessence files")
 	@make quintessences -j8
-	$(call output_terminal_message,"Make all the component object files")
+	$(call output_terminal_message,"Make all the component dependency files")
 	@make deps -j8
 	$(call output_terminal_message,"Make all the dependency files")
 	@make objects -j8
