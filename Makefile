@@ -10,16 +10,6 @@ FOCUSED_COMPONENT_NAME=`cat ${FOCUSED_COMPONENT_FILENAME}`
 FOCUSED_TEST_FILTER=${FILTER}
 
 
-ifeq ($(OS),Windows_NT)
-else
-	ERROR_IF_INCORRECT_RETURN_TYPE=-Werror=return-type
-	ERROR_IF_UNINITIALIZED=-Werror=uninitialized
-	UNUSED_ARGUMENTS_FLAG=-Qunused-arguments
-	DISABLE_UNUSED_VARIABLE_WARNING_FLAG=-Wno-unused-variable
-	ERROR_LIMIT_FLAG=-ferror-limit=1
-endif
-
-
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
@@ -92,6 +82,20 @@ TEST_RUNNER_PROGRAM_NAME=TestRunner
 # ProjectMakefile can be included in each project repo, and includes values like
 # PROJECT_LIB_NAME and VERSION_NUMBER
 -include ProjectMakefile
+
+
+
+# Preferred build warnings
+
+ifeq ($(OS),Windows_NT)
+else
+	ERROR_IF_INCORRECT_RETURN_TYPE=-Werror=return-type
+	ERROR_IF_UNINITIALIZED=-Werror=uninitialized
+	#UNUSED_ARGUMENTS_FLAG is for unused command line arguments
+	UNUSED_ARGUMENTS_FLAG=-Qunused-arguments
+	DISABLE_UNUSED_WARNINGS_FLAG=-Wno-unused-variable -Wno-unused-private-field -Wno-unused-function
+	ERROR_LIMIT_FLAG=-ferror-limit=1
+endif
 
 
 
@@ -498,7 +502,7 @@ celebrate_everything_built_legacy:
 bin/programs/%: programs/%.cpp $(OBJECTS)
 	@mkdir -p $(@D)
 	@printf "Compiling program executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_VARIABLE_WARNING_FLAG) $(OBJECTS) $< -o $@ $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -l$(ALLEGRO_FLARE_LIB) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -L$(ALLEGRO_LIB_DIR)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -l$(ALLEGRO_FLARE_LIB) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -L$(ALLEGRO_LIB_DIR)
 	@printf "Program executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -506,7 +510,7 @@ bin/programs/%: programs/%.cpp $(OBJECTS)
 bin/examples/%: examples/%.cpp $(OBJECTS)
 	@mkdir -p $(@D)
 	@printf "Compiling example executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_VARIABLE_WARNING_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@printf "Example executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -514,7 +518,7 @@ bin/examples/%: examples/%.cpp $(OBJECTS)
 bin/demos/%: demos/%.cpp $(OBJECTS)
 	@mkdir -p $(@D)
 	@printf "Compiling demo executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@printf "Demo executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -523,7 +527,7 @@ bin/demos/%: demos/%.cpp $(OBJECTS)
 obj/%.o: src/%.cpp
 	@mkdir -p $(@D)
 	@printf "Compiling object file \e[1m\e[34m$@\033[0m\n"
-	@g++ -g -c $(ERROR_LIMIT_FLAG) -std=c++17 $(UNUSED_ARGUMENTS_FLAG) $(ERROR_IF_INCORRECT_RETURN_TYPE) $(ERROR_IF_UNINITIALIZED) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -D_XOPEN_SOURCE_EXTENDED -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@g++ -g -c $(ERROR_LIMIT_FLAG) -std=c++17 $(UNUSED_ARGUMENTS_FLAG) $(ERROR_IF_INCORRECT_RETURN_TYPE) $(ERROR_IF_UNINITIALIZED) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -D_XOPEN_SOURCE_EXTENDED -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
 	@printf "Object file at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -553,7 +557,7 @@ endif
 obj/tests/%.o: tests/%.cpp
 	@mkdir -p $(@D)
 	@printf "Compiling test object file \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I./include -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR)
+	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< -o $@ -I./include -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR)
 	@printf "Test object file at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -561,7 +565,7 @@ obj/tests/%.o: tests/%.cpp
 obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o: tests/$(TEST_RUNNER_PROGRAM_NAME).cpp
 	@mkdir -p $(@D)
 	@printf "Compiling test object for $(TEST_RUNNER_PROGRAM_NAME) \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< -o $@ -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR)
+	@g++ -g -c -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< -o $@ -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(GOOGLE_TEST_INCLUDE_DIR) -I$(GOOGLE_MOCK_INCLUDE_DIR) -I$(ALLEGRO_FLARE_INCLUDE_DIR)
 	@printf "Object for $(TEST_RUNNER_PROGRAM_NAME) at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -569,7 +573,7 @@ obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o: tests/$(TEST_RUNNER_PROGRAM_NAME).cpp
 bin/tests/%: obj/tests/%.o obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
 	@mkdir -p $(@D)
 	@printf "Compiling standalone test executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $< obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
 	@printf "Standalone executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
@@ -577,7 +581,7 @@ bin/tests/%: obj/tests/%.o obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
 bin/run_all_tests: $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
 	@mkdir -p $(@D)
 	@printf "Compiling run_all_tests executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
+	@g++ -g -std=c++17 $(UNUSED_ARGUMENTS_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB_FOR_TESTS) -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME)
 	@printf "run_all_tests executable at \e[1m\e[36m$@\033[0m compiled successfully.\n"
 
 
