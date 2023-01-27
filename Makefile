@@ -98,6 +98,7 @@ else
 	DISABLE_UNUSED_WARNINGS_FLAG=-Wno-unused-variable -Wno-unused-private-field -Wno-unused-function
 
 	#TODO: update to this line that includes an out-of-order ctor error promotion
+	#TODO: include -Woverloaded-virtual -Winconsistent-missing-override to promoted errors
   #WARNINGS_PROMOTED_TO_ERRORS_FLAGS=$(ERROR_IF_UNINITIALIZED) $(ERROR_IF_INCORRECT_RETURN_TYPE) $(ERROR_IF_CONSTRUCTOR_INIT_OUT_OF_ORDER)
   WARNINGS_PROMOTED_TO_ERRORS_FLAGS=$(ERROR_IF_UNINITIALIZED) $(ERROR_IF_INCORRECT_RETURN_TYPE)
 
