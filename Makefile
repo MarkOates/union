@@ -89,17 +89,23 @@ TEST_RUNNER_PROGRAM_NAME=TestRunner
 
 ifeq ($(OS),Windows_NT)
 else
-	ERROR_IF_INCORRECT_RETURN_TYPE=-Werror=return-type
-	ERROR_IF_UNINITIALIZED=-Werror=uninitialized
-	ERROR_IF_CONSTRUCTOR_INIT_OUT_OF_ORDER=-Werror=reorder-ctor
 	#DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG is for unused command line arguments
 	DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG=-Qunused-arguments
+
+	ERROR_IF_UNINITIALIZED=-Werror=uninitialized
+	ERROR_IF_INCORRECT_RETURN_TYPE=-Werror=return-type
+	ERROR_IF_CONSTRUCTOR_INIT_OUT_OF_ORDER=-Werror=reorder-ctor
+	ERROR_IF_ACCIDENTAL_OVERLOAD=-Werror=overloaded-virtual
+	ERROR_IF_VIRTUAL_NOT_MARKED_OVERRIDE=-Werror=inconsistent-missing-override
+	ERROR_IF_MACRO_REDEFINED=-Werror=macro-redefined
 
 	DISABLE_UNUSED_WARNINGS_FLAG=-Wno-unused-variable -Wno-unused-private-field -Wno-unused-function
 
 	#TODO: update to this line that includes an out-of-order ctor error promotion
 	#TODO: include -Woverloaded-virtual -Winconsistent-missing-override to promoted errors
-  WARNINGS_PROMOTED_TO_ERRORS_FLAGS=$(ERROR_IF_UNINITIALIZED) $(ERROR_IF_INCORRECT_RETURN_TYPE) $(ERROR_IF_CONSTRUCTOR_INIT_OUT_OF_ORDER)
+	#TODO: consider unused-but-set-variable
+	#TODO: consider braced-scalar-init
+  WARNINGS_PROMOTED_TO_ERRORS_FLAGS=$(ERROR_IF_UNINITIALIZED) $(ERROR_IF_INCORRECT_RETURN_TYPE) $(ERROR_IF_CONSTRUCTOR_INIT_OUT_OF_ORDER) $(ERROR_IF_ACCIDENTAL_OVERLOAD) $(ERROR_IF_VIRTUAL_NOT_MARKED_OVERRIDE) $(ERROR_IF_MACRO_REDEFINED)
   #WARNINGS_PROMOTED_TO_ERRORS_FLAGS=$(ERROR_IF_UNINITIALIZED) $(ERROR_IF_INCORRECT_RETURN_TYPE)
 
 	ERROR_LIMIT_FLAG=-ferror-limit=1
