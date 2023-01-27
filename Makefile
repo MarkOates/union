@@ -147,10 +147,10 @@ endif
 
 # TODO: modify this conditional to an ifdef
 ifneq ($(USING_ALLEGRO_FLARE),FALSE)
-	ifeq ($(OS),Windows_NT)
-	  ALLEGRO_FLARE_BUILD_ARGS=-I$(ALLEGRO_FLARE_INCLUDE_DIR)
-		ALLEGRO_FLARE_LINK_ARGS=-L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
-	endif
+	#ifeq ($(OS),Windows_NT)
+	ALLEGRO_FLARE_BUILD_ARGS=-I$(ALLEGRO_FLARE_INCLUDE_DIR)
+	ALLEGRO_FLARE_LINK_ARGS=-L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	#endif
 
 	#NCURSES_LIB=ncurses
 	#NCURSES_LIB_ARG=-l$(NCURSES_LIB)
@@ -592,6 +592,8 @@ endif
 
 
 
+# NOTE: I think this target is no longer used
+
 obj/tests/%.o: tests/%.cpp
 	@mkdir -p $(@D)
 	@printf "Compiling test object file \e[1m\e[36m$@\033[0m\n"
@@ -611,7 +613,7 @@ obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o: tests/$(TEST_RUNNER_PROGRAM_NAME).cpp
 bin/tests/%: obj/tests/%.o obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
 	@mkdir -p $(@D)
 	@printf "Compiling standalone test executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME) $(NCURSES_LINK_ARGS)
+	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
 	@printf "Standalone executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
 
