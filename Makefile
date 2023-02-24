@@ -537,30 +537,6 @@ celebrate_everything_built_legacy:
 	@printf "Dependency at \033[1m\033[32m$@\033[0m created successfully.\n"
 
 
-bin/programs/%: programs/%.cpp $(OBJECTS)
-	@mkdir -p $(@D)
-	@printf "Compiling program executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@  $(NCURSES_BUILD_ARGS) $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L$(ALLEGRO_LIB_DIR) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
-	@printf "Program executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
-
-
-
-bin/examples/%: examples/%.cpp $(OBJECTS)
-	@mkdir -p $(@D)
-	@printf "Compiling example executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
-	@printf "Example executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
-
-
-
-bin/demos/%: demos/%.cpp $(OBJECTS)
-	@mkdir -p $(@D)
-	@printf "Compiling demo executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
-	@printf "Demo executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
-
-
-
 
 obj/%.o: src/%.cpp
 	@mkdir -p $(@D)
@@ -568,31 +544,6 @@ obj/%.o: src/%.cpp
 	@g++ -g -c $(ERROR_LIMIT_FLAG) -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) -Wall -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -D_XOPEN_SOURCE_EXTENDED -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB) $(NCURSES_BUILD_ARGS)
 	@printf "Object file at \033[1m\033[32m$@\033[0m compiled successfully.\n"
 
-
-
-$(LIBRARY_FOR_TESTS_NAME): $(OBJECTS)
-	@printf "Compiling library-for-tests \e[1m\e[36m$@\033[0m\n"
-ifeq ($(OBJECTS),)
-	@printf "\033[1m\033[32mnothing to be done, there are no objects to build into a library-for-tests\033[0m."
-else
-	@ar rs $(LIBRARY_FOR_TESTS_NAME) $^
-	@printf "done. Library-for-tests file at \033[1m\033[32m$@\033[0m\n"
-endif
-
-
-
-$(LIBRARY_NAME): $(OBJECTS)
-	@printf "Compiling library \e[1m\e[36m$@\033[0m\n"
-ifeq ($(OBJECTS),)
-	@printf "\033[1m\033[32mnothing to be done, there are no objects to build into a library\033[0m."
-else
-	@ar rs $(LIBRARY_NAME) $^
-	@printf "done. Library file at \033[1m\033[32m$@\033[0m\n"
-endif
-
-
-
-# NOTE: I think this target is no longer used
 
 obj/tests/%.o: tests/%.cpp
 	@mkdir -p $(@D)
@@ -625,6 +576,55 @@ bin/run_all_tests: $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
 	@printf "run_all_tests executable at \e[1m\e[36m$@\033[0m compiled successfully.\n"
 
 
+
+bin/programs/%: programs/%.cpp $(OBJECTS)
+	@mkdir -p $(@D)
+	@printf "Compiling program executable \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@  $(NCURSES_BUILD_ARGS) $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L$(ALLEGRO_LIB_DIR) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
+	@printf "Program executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+
+
+
+bin/examples/%: examples/%.cpp $(OBJECTS)
+	@mkdir -p $(@D)
+	@printf "Compiling example executable \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
+	@printf "Example executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+
+
+
+bin/demos/%: demos/%.cpp $(OBJECTS)
+	@mkdir -p $(@D)
+	@printf "Compiling demo executable at \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
+	@printf "Demo executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+
+
+
+
+$(LIBRARY_FOR_TESTS_NAME): $(OBJECTS)
+	@printf "Compiling library-for-tests \e[1m\e[36m$@\033[0m\n"
+ifeq ($(OBJECTS),)
+	@printf "\033[1m\033[32mnothing to be done, there are no objects to build into a library-for-tests\033[0m."
+else
+	@ar rs $(LIBRARY_FOR_TESTS_NAME) $^
+	@printf "done. Library-for-tests file at \033[1m\033[32m$@\033[0m\n"
+endif
+
+
+
+$(LIBRARY_NAME): $(OBJECTS)
+	@printf "Compiling library \e[1m\e[36m$@\033[0m\n"
+ifeq ($(OBJECTS),)
+	@printf "\033[1m\033[32mnothing to be done, there are no objects to build into a library\033[0m."
+else
+	@ar rs $(LIBRARY_NAME) $^
+	@printf "done. Library file at \033[1m\033[32m$@\033[0m\n"
+endif
+
+
+
+# NOTE: I think this target is no longer used
 
 list_quintessence_sources:
 	@for item in $(QUINTESSENCE_SOURCES) ; do \
