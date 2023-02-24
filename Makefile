@@ -538,6 +538,10 @@ celebrate_everything_built_legacy:
 
 
 
+#### objects
+
+
+
 obj/%.o: src/%.cpp
 	@mkdir -p $(@D)
 	@printf "Compiling object file \e[1m\e[34m$@\033[0m\n"
@@ -561,44 +565,7 @@ obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o: tests/$(TEST_RUNNER_PROGRAM_NAME).cpp
 
 
 
-bin/tests/%: obj/tests/%.o obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
-	@mkdir -p $(@D)
-	@printf "Compiling standalone test executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
-	@printf "Standalone executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
-
-
-
-bin/run_all_tests: $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
-	@mkdir -p $(@D)
-	@printf "Compiling run_all_tests executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Wuninitialized -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
-	@printf "run_all_tests executable at \e[1m\e[36m$@\033[0m compiled successfully.\n"
-
-
-
-bin/programs/%: programs/%.cpp $(OBJECTS)
-	@mkdir -p $(@D)
-	@printf "Compiling program executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@  $(NCURSES_BUILD_ARGS) $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L$(ALLEGRO_LIB_DIR) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
-	@printf "Program executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
-
-
-
-bin/examples/%: examples/%.cpp $(OBJECTS)
-	@mkdir -p $(@D)
-	@printf "Compiling example executable \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
-	@printf "Example executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
-
-
-
-bin/demos/%: demos/%.cpp $(OBJECTS)
-	@mkdir -p $(@D)
-	@printf "Compiling demo executable at \e[1m\e[36m$@\033[0m\n"
-	@g++ -g -std=c++17 $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@ -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -I$(ALLEGRO_FLARE_INCLUDE_DIR) -L$(ALLEGRO_FLARE_LIB_DIR) -l$(ALLEGRO_FLARE_LIB)
-	@printf "Demo executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
-
+#### libraries
 
 
 
@@ -624,7 +591,51 @@ endif
 
 
 
-# NOTE: I think this target is no longer used
+### executables
+
+
+
+bin/tests/%: obj/tests/%.o obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
+	@mkdir -p $(@D)
+	@printf "Compiling standalone test executable at \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $< obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I./include $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
+	@printf "Standalone executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+
+
+
+bin/run_all_tests: $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o
+	@mkdir -p $(@D)
+	@printf "Compiling run_all_tests executable \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(DISABLE_UNUSED_WARNINGS_FLAG) $(TEST_OBJECTS) obj/tests/$(TEST_RUNNER_PROGRAM_NAME).o -o $@ -I./include -l$(GOOGLE_MOCK_LIBS) -l$(GOOGLE_TEST_LIBS) -I$(ASIO_INCLUDE_DIR) -L$(ALLEGRO_LIB_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L./lib -l$(LIBRARY_FOR_TESTS_FOR_LINKING_NAME) $(NCURSES_LINK_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
+	@printf "run_all_tests executable at \e[1m\e[36m$@\033[0m compiled successfully.\n"
+
+
+
+bin/programs/%: programs/%.cpp $(OBJECTS)
+	@mkdir -p $(@D)
+	@printf "Compiling program executable \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@  $(NCURSES_BUILD_ARGS) $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L$(ALLEGRO_LIB_DIR) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
+	@printf "Program executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+
+
+
+bin/examples/%: examples/%.cpp $(OBJECTS)
+	@mkdir -p $(@D)
+	@printf "Compiling example executable \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@  $(NCURSES_BUILD_ARGS) $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L$(ALLEGRO_LIB_DIR) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
+	@printf "Example executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+
+
+
+bin/demos/%: demos/%.cpp $(OBJECTS)
+	@mkdir -p $(@D)
+	@printf "Compiling demo executable at \e[1m\e[36m$@\033[0m\n"
+	@g++ -g -std=c++17 $(ERROR_LIMIT_FLAG) $(DISABLE_UNUSED_LINK_ARGUMENTS_WARNING_FLAG) -Wall -Weffc++ $(WARNINGS_PROMOTED_TO_ERRORS_FLAGS) $(DISABLE_UNUSED_WARNINGS_FLAG) $(OBJECTS) $< -o $@  $(NCURSES_BUILD_ARGS) $(NCURSES_LINK_ARGS) -I./include -I$(ASIO_INCLUDE_DIR) -l$(GOOGLE_TEST_LIBS) -I$(ALLEGRO_INCLUDE_DIR) -I$(ALLEGRO_PLATFORM_INCLUDE_DIR) -I$(YAML_CPP_INCLUDE_DIR) -L$(YAML_CPP_LIB_DIR) -l$(YAML_CPP_LIBS) $(ALLEGRO_LIBS_LINK_MAIN_ARGS) -D_XOPEN_SOURCE_EXTENDED $(OPENGL_LIB) $(REQUIRED_WINDOWS_NETWORK_FLAGS) -L$(ALLEGRO_LIB_DIR) $(ALLEGRO_FLARE_BUILD_ARGS) $(ALLEGRO_FLARE_LINK_ARGS)
+	@printf "Demo executable at \033[1m\033[32m$@\033[0m compiled successfully.\n"
+
+
+
+
 
 list_quintessence_sources:
 	@for item in $(QUINTESSENCE_SOURCES) ; do \
