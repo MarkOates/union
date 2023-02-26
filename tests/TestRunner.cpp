@@ -34,6 +34,8 @@ int main(int argc, char **argv)
 {
    ::testing::InitGoogleTest(&argc, argv);
 
+   ::testing::GTEST_FLAG(color) = "yes"; //"TestCaseOne.*:TestCaseTwo.Test5:TestCaseTen.Test3";
+
    //// Gets hold of the event listener list.
    //testing::TestEventListeners& listeners =
       //testing::UnitTest::GetInstance()->listeners();
