@@ -17,6 +17,8 @@ if [ $# -ne 1 ]; then
     echo "Example 2:"
     echo ""
     echo "./scripts/build_win64_release.sh CubeShooter-SourceRelease-230226193517UTC"
+    echo ""
+    echo "NOTE: Releases can be found at https://storage.googleapis.com/clubcatt-games-bucket/"
     exit 1
 fi
 
