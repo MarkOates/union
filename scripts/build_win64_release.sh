@@ -6,79 +6,32 @@
 
 ## CRITICAL: validate an arg is present representing the download token
 
-if [ $# -ne 2 ]; then
+if [ $# -ne 1 ]; then
     echo ""
-    echo "!! Error: Incorrect number of arguments provided. You must provide a token corresponding to the google drive's file id and the expected source release folder name."
+    echo "!! Error: Incorrect number of arguments provided. You must provide one."
     echo ""
     echo "Example:"
     echo ""
-    echo "./scripts/build_win64_release.sh 15hxKFtqS_wSF7JeNXAapgarmYrEK5bdi TheWeepingHouse-SourceRelease-221209225033UTC"
+    echo "./scripts/build_win64_release.sh <expected-folder-name-inside-the-zip>"
+    echo ""
+    echo "Example 2:"
+    echo ""
+    echo "./scripts/build_win64_release.sh CubeShooter-SourceRelease-230226193517UTC"
     exit 1
 fi
 
 
 
-## CRITICAL: validate the arg is of a reasonably expected length (let's just go with min(24) max(48) for now)
+# TODO: ping -c 1 google.com
 
-## at least 24 characters
-
-if [ ${#1} -le 24 ]
-then
-  echo "Error. Argument is shorter than the expected reasonable length (24)."
-  exit 2
-fi
-
-## at most 48 characters
-
-if [ ${#1} -ge 48 ]
-then
-  echo "Error. Argument is greater than the expected reasonable length (48)."
-  exit 3
-fi
-
-
-
-## CRITICAL: validate the arg contains only the expected characters, numbers, and symbols ('-' and '_')
-
-if [[ $1 =~ ^[0-9a-zA-Z_-]+$ ]]
-then
-    echo "."
-else
-    echo "Error. First argument contains invalid characters."
-    exit 4
-fi
-
-
-
-## CRITICAL: validate the second arg contains only the expected characters, numbers, and symbols ('-' and '_')
-
-if [[ $1 =~ ^[0-9a-zA-Z_-]+$ ]]
-then
-    echo "."
-else
-    echo "Error. Second argument contains invalid characters."
-    exit 5
-fi
-
-
-echo "✅ Argument format validated."
-
-## Assign the arg token to the value here:
-
-SOURCE_TOKEN=$1
-
-
-
-
-# SOURCE_FOLDER_NAME="Krampus22_test1-SourceRelease-221209225033UTC"
-SOURCE_FOLDER_NAME=$2
-
-
-
-SOURCE_URL="https://drive.google.com/uc?export=download&id=$SOURCE_TOKEN";
+SOURCE_URL="https://storage.googleapis.com/clubcatt-games-bucket/$1.zip";
+# SOURCE_URL="https://drive.google.com/uc?export=download&id=$SOURCE_TOKEN";
 TEMP_BUILD_DIR="/c/Users/Mark/Desktop/temp_location_for_building/"
-FOOBAR="local_zip_name.zip"
-FOOBAR_WITHOUT_ZIP="local_zip_name"
+FOOBAR="$1.zip"
+FOOBAR_WITHOUT_ZIP="$1"
+
+
+# TODO: validate characters in $1
 
 
 #"Krampus22_test1-SourceRelease-221209225033UTC.zip"
