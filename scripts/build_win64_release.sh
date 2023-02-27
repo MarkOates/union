@@ -31,6 +31,7 @@ SOURCE_URL="https://storage.googleapis.com/clubcatt-games-bucket/$1.zip";
 TEMP_BUILD_DIR="/c/Users/Mark/Desktop/temp_location_for_building/"
 FOOBAR="$1.zip"
 FOOBAR_WITHOUT_ZIP="$1"
+SOURCE_FOLDER_NAME="$1"
 
 
 # TODO: validate characters in $1
