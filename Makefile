@@ -43,7 +43,7 @@ YAML_CPP_INCLUDE_DIR=$(YAML_CPP_DIR)/include
 QUINTESSENCE_BUILDER_EXECUTABLE=~/Repos/blast/bin/programs/quintessence_from_yaml
 OUTPUT_BANNER_EXECUTABLE=~/Repos/blast/bin/programs/build_celebrator
 SOURCE_RELEASER_EXECUTABLE=~/Repos/blast/bin/programs/create_source_release
-WIN64_RELEASER_EXECUTABLE=~/Repos/union/scripts/build_win64_release.sh
+WIN64_RELEASER_EXECUTABLE=~/Repos/blast/scripts/build_win64_release.sh
 MACOS_RELEASER_EXECUTABLE=~/Repos/blast/bin/programs/macos_release_builder
 
 
