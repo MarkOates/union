@@ -44,7 +44,7 @@ QUINTESSENCE_BUILDER_EXECUTABLE=~/Repos/blast/bin/programs/quintessence_from_yam
 OUTPUT_BANNER_EXECUTABLE=~/Repos/blast/bin/programs/build_celebrator
 SOURCE_RELEASER_EXECUTABLE=~/Repos/blast/bin/programs/create_source_release
 WIN64_RELEASER_EXECUTABLE=~/Repos/union/scripts/build_win64_release.sh
-MACOS_RELEASER_EXECUTABLE=~/Repos/hexagon/bin/programs/macos_release_builder
+MACOS_RELEASER_EXECUTABLE=~/Repos/blast/bin/programs/macos_release_builder
 
 
 
